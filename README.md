@@ -55,6 +55,7 @@ float map(vec3 p) {
 
 ## Credits
 
+- [React Bits](https://www.reactbits.dev/) - Glass bar component inspiration
 - [Inigo Quilez](https://iquilezles.org/articles/smin/) - SDF and smooth minimum techniques
 - [React Three Fiber](https://github.com/pmndrs/react-three-fiber)
 - [Drei](https://github.com/pmndrs/drei)
