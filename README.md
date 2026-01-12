@@ -1,70 +1,60 @@
-# Getting Started with Create React App
+# Liquid Glass UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React demo showcasing liquid glass effects inspired by iOS 26's aesthetic. Features gooey metaball animations, glass refraction using WebGL shaders, and smooth spring physics.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Gooey Menu** - Burger menu with liquid droplet animations using ray marching and smooth minimum blending
+- **Glass Nav Bar** - Bottom navigation bar with `MeshTransmissionMaterial` for realistic glass refraction
+- **Scrollable Gallery** - Parallax image gallery with zoom effects
+- **Spring Physics** - Organic animations with variable stiffness for natural liquid feel
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- Three.js / React Three Fiber
+- Drei (R3F helpers)
+- Custom GLSL shaders
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 3D Models Required
 
-### `npm test`
+Place these GLB files in the `public` folder:
+- `lens.glb` - Cylinder geometry for lens effect
+- `bar.glb` - Cube geometry for navigation bar
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+```bash
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Open [http://localhost:3000](http://localhost:3000)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Key Techniques
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Smooth Minimum (Gooey Effect)
+```glsl
+float smoothMin(float d1, float d2, float k) {
+  float h = max(k - abs(d1 - d2), 0.0) / k;
+  return min(d1, d2) - h * h * k * 0.25;
+}
+```
 
-### `npm run eject`
+### Ray Marching with Metaballs
+```glsl
+float map(vec3 p) {
+  float d = MAX_DIST;
+  for (int i = 0; i < 4; i++) {
+    float sphere = sdSphere(p, uBalls[i], uRadii[i]);
+    d = smoothMin(d, sphere, k);
+  }
+  return d;
+}
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Credits
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Inigo Quilez](https://iquilezles.org/articles/smin/) - SDF and smooth minimum techniques
+- [React Three Fiber](https://github.com/pmndrs/react-three-fiber)
+- [Drei](https://github.com/pmndrs/drei)
